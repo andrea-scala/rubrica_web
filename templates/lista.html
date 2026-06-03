@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Contatti</h2>
+    <a href="/editor" class="btn btn-primary">+ NUOVO</a>
+</div>
+
+{% if contatti %}
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Telefono</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for persona in contatti %}
+        <tr>
+            <td>{{ persona.id }}</td>
+            <td>{{ persona.nome }}</td>
+            <td>{{ persona.cognome }}</td>
+            <td>{{ persona.telefono }}</td>
+            <td>
+                <a href="/editor?id={{ persona.id }}" class="btn btn-sm btn-warning">MODIFICA</a>
+            </td>
+            <td>
+                <a href="/elimina/{{ persona.id }}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Eliminare {{ persona.nome }} {{ persona.cognome }}?')">
+                   ELIMINA
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">Nessun contatto presente. Clicca NUOVO per aggiungerne uno.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Configurazione Database</h4>
+            </div>
+            <div class="card-body">
+                <form action="/" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Host</label>
+                        <input type="text" name="HOST" class="form-control" value="localhost">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Porta</label>
+                        <input type="number" name="PORT" class="form-control" value="3306">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nome Database</label>
+                        <input type="text" name="DB" class="form-control" value="rubrica">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="USERNAME" class="form-control" value="rubrica">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="PASSWORD" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">PROCEDI</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
