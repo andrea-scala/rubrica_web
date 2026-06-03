@@ -30,7 +30,7 @@ SECRET_KEY=una-stringa-segreta-qualsiasi
 ```bash
 sudo service mysql start
 sudo mysql < schema_database.sql
-python3 crea_utente.py
+python3 crea_utente.py #le credenziali sono admin admin
 flask run
 ```
 
