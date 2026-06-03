@@ -8,10 +8,16 @@
 </head>
 <body>
     <nav class="navbar navbar-dark bg-primary mb-4">
-        <div class="container">
-            <span class="navbar-brand">Rubrica</span>
+    <div class="container">
+        <span class="navbar-brand">Rubrica</span>
+        {% if session.get('utente') %}
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-white">👤 {{ session.get('utente') }}</span>
+            <a href="/logout" class="btn btn-outline-light btn-sm">LOGOUT</a>
         </div>
-    </nav>
+        {% endif %}
+    </div>
+</nav>
     <div class="container">
         {% block content %}{% endblock %}
     </div>
