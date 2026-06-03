@@ -34,7 +34,19 @@ def index():
             'USERNAME': request.form.get('USERNAME'),
             'PASSWORD': request.form.get('PASSWORD')
         }
-        return redirect(url_for('lista'))
+        return redirect(url_for('login'))
     else:
         return render_template('index.html')
-    
+
+@app.route("/login", methods=['GET', 'POST'])
+@db_config_required
+def login():
+
+@app.route("/lista")
+@db_config_required
+@login_required
+def lista():
+    from rubrica import Rubrica
+    r = Rubrica(session.get('db_config'))
+    contatti = r.get_all()
+    return render_template('lista.html', contatti=contatti)
