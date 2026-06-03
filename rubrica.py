@@ -53,7 +53,15 @@ class Rubrica:
         conn.commit()
         cursor.close()
         conn.close()
-
+        
+    def get_utente_by_username(self, username):
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM utenti WHERE username = %s", (username,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return row
 if __name__ == "__main__":
     from rubrica import Rubrica
     from models import Persona

@@ -24,6 +24,25 @@ def login_required(f):
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated
+@app.route("/login", methods=['GET', 'POST'])
+@db_config_required
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        from rubrica import Rubrica
+        r = Rubrica(session.get('db_config'))
+        utente = r.get_utente_by_username(username)
+        if utente and check_password_hash(utente['password_hash'], password):
+            session['utente'] = username
+            return redirect(url_for('lista'))
+        return render_template('login.html', errore='Username o password errati')
+    return render_template('login.html', errore=None)
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -44,21 +63,6 @@ def index():
             return render_template('index.html', errore='Impossibile connettersi al database. Verifica i parametri.')
     return render_template('index.html', errore=None)
 
-@app.route("/login", methods=['GET', 'POST'])
-@db_config_required
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        from rubrica import Rubrica
-        r = Rubrica(session.get('db_config'))
-        utente = r.get_utente_by_username(username)
-        if utente and check_password_hash(utente['password_hash'], password):
-            session['utente'] = username
-            return redirect(url_for('lista'))
-        return render_template('login.html', errore='Username o password errati')
-    return render_template('login.html', errore=None)
-
 @app.route("/lista")
 @db_config_required
 @login_required
@@ -67,3 +71,17 @@ def lista():
     r = Rubrica(session.get('db_config'))
     contatti = r.get_all()
     return render_template('lista.html', contatti=contatti)
+
+@app.route("/editor")
+@db_config_required
+@login_required
+def editor():
+    id = request.args.get('id')
+    if id:
+        from rubrica import Rubrica
+        r = Rubrica(session.get('db_config'))
+        persona = r.get_by_id(id)
+    else:
+        from models import Persona
+        persona = Persona()
+    return render_template('editor.html', persona=persona)
