@@ -85,3 +85,34 @@ def editor():
         from models import Persona
         persona = Persona()
     return render_template('editor.html', persona=persona)
+
+@app.route("/salva", methods=['POST'])
+@db_config_required
+@login_required
+def salva():
+    from rubrica import Rubrica
+    from models import Persona
+    id = request.form.get('id')
+    persona = Persona(
+        id        = int(id) if id else None,
+        nome      = request.form.get('nome'),
+        cognome   = request.form.get('cognome'),
+        indirizzo = request.form.get('indirizzo'),
+        telefono  = request.form.get('telefono'),
+        eta       = int(request.form.get('eta') or 0)
+    )
+    r = Rubrica(session.get('db_config'))
+    if persona.id:
+        r.update(persona)
+    else:
+        r.insert(persona)
+    return redirect(url_for('lista'))
+
+@app.route("/elimina/<int:id>")
+@db_config_required
+@login_required
+def elimina(id):
+    from rubrica import Rubrica
+    r = Rubrica(session.get('db_config'))
+    r.delete(id)
+    return redirect(url_for('lista'))
